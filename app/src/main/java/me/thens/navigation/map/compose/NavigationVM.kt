@@ -1,4 +1,4 @@
-package me.thens.navigation.map
+package me.thens.navigation.map.compose
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -9,6 +9,12 @@ import com.baidu.mapapi.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import me.thens.navigation.core.app.BaseViewModel
+import me.thens.navigation.map.LocationService
+import me.thens.navigation.map.RouteService
+import me.thens.navigation.map.distanceTo
+import me.thens.navigation.map.toLatLng
+import me.thens.navigation.map.toMyLocation
+import me.thens.navigation.map.wayPoints
 import java.util.Date
 import javax.inject.Inject
 

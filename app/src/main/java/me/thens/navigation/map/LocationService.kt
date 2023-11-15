@@ -31,6 +31,8 @@ class LocationService @Inject constructor(
         locationClient.locOption = LocationClientOption().apply {
             openGps = true
             scanSpan = 1000
+            locationMode = LocationClientOption.LocationMode.Hight_Accuracy
+            coorType = "bd09ll"
         }
         locationClient.registerLocationListener(listener)
         locationClient.start()

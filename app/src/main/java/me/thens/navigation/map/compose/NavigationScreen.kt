@@ -19,7 +19,6 @@ import com.baidu.mapapi.model.LatLng
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import me.thens.navigation.R
 import me.thens.navigation.core.app.Permission
-import me.thens.navigation.map.NavigationVM
 import me.thens.navigation.ui.theme.AppTheme
 
 @Composable

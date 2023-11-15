@@ -3,6 +3,7 @@ package me.thens.navigation
 import android.app.Application
 import android.util.Log
 import com.baidu.location.LocationClient
+import com.baidu.mapapi.CoordType
 import com.baidu.mapapi.SDKInitializer
 import com.baidu.mapapi.walknavi.WalkNavigateHelper
 import dagger.hilt.android.HiltAndroidApp
@@ -19,6 +20,7 @@ class App : Application() {
         LocationClient.setAgreePrivacy(true)
         SDKInitializer.setAgreePrivacy(this, true)
         SDKInitializer.initialize(this)
+        SDKInitializer.setCoordType(CoordType.BD09LL);
     }
 
     companion object {
