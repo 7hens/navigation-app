@@ -8,13 +8,11 @@ import com.baidu.mapapi.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import me.thens.navigation.core.app.BaseViewModel
-import me.thens.navigation.map.service.RouteService
-import me.thens.navigation.map.util.distanceTo
 import me.thens.navigation.map.service.LocationService
+import me.thens.navigation.map.service.RouteService
 import me.thens.navigation.map.util.toLatLng
 import me.thens.navigation.map.util.toMyLocation
 import me.thens.navigation.map.util.wayPoints
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,25 +23,17 @@ class HomeVM @Inject constructor(
     val destination = MutableLiveData<LatLng>()
     val origin = MutableLiveData<LatLng>()
     val myLocation = MutableLiveData<MyLocationData>()
-    val traveledPath = MutableLiveData(emptyList<LatLng>())
     val navigationPath = MutableLiveData(emptyList<LatLng>())
     val isNavigatable = navigationPath.map { it.size > 2 }
-    val isTripEnded = MutableLiveData(false)
-    val tripStartTime = MutableLiveData<Date>()
-    val tripEndTime = MutableLiveData<Date>()
 
     sealed interface Event {
         class UpdateDestination(val value: LatLng) : Event
         object OnMapLoaded : Event
-        object StartNavigation : Event
-        object StopNavigation : Event
     }
 
     fun onEvent(event: Event) {
         when (event) {
             is Event.UpdateDestination -> updateDestination(event.value)
-            is Event.StartNavigation -> startNavigation()
-            is Event.StopNavigation -> stopNavigation()
             is Event.OnMapLoaded -> onMapLoaded()
             else -> Unit
         }
@@ -55,15 +45,7 @@ class HomeVM @Inject constructor(
 
     private suspend fun monitorLocation() {
         locationService.monitorLocation().collect { location ->
-            if (isNavigatable.value == true) {
-                val destination = destination.value!!
-                traveledPath.value = traveledPath.value!! + location.toLatLng()
-                if (location.toLatLng().distanceTo(destination) < 10) {
-                    stopNavigation()
-                }
-            } else {
-                myLocation.value = location.toMyLocation()
-            }
+            myLocation.value = location.toMyLocation()
         }
     }
 
@@ -71,6 +53,7 @@ class HomeVM @Inject constructor(
 
     private fun updateDestination(value: LatLng) {
         val originVal = myLocation.value!!.toLatLng()
+        origin.value = originVal
         destination.value = value
         navigationPath.value = emptyList()
         navigationJob.cancel()
@@ -81,20 +64,6 @@ class HomeVM @Inject constructor(
             Log.d(TAG, "startNavigation: $navigationPoints")
             navigationPath.value = navigationPoints
         }
-    }
-
-    private fun startNavigation() {
-        val destinationVal = destination.value!!
-        Log.d(TAG, "startNavigation: $destinationVal")
-        traveledPath.value = emptyList()
-        tripStartTime.value = Date()
-        origin.value = myLocation.value!!.toLatLng()
-    }
-
-    private fun stopNavigation() {
-        isTripEnded.value = true
-        tripEndTime.value = Date()
-        navigationJob.cancel()
     }
 
     companion object {

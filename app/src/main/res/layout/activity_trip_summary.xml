@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".map.activity.TripSummaryActivity">
+
+    <Button
+        android:id="@+id/back"
+        android:text="Back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/durationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DURATION:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/back"
+        android:layout_margin="16dp"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:id="@+id/duration"
+        android:text="00:00"
+        android:textSize="24sp"
+        android:textColor="@color/wsdk_color_common_blue"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintTop_toTopOf="@id/durationTitle"
+        app:layout_constraintStart_toEndOf="@id/durationTitle"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/distanceTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DISTANCE:"
+        app:layout_constraintBottom_toTopOf="@id/duration"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:id="@+id/distance"
+        android:text="30m"
+        android:textSize="24sp"
+        android:textColor="@color/wsdk_color_common_blue"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintTop_toTopOf="@id/distanceTitle"
+        app:layout_constraintStart_toEndOf="@id/distanceTitle"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Space
+        android:id="@+id/mapBottom"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/distanceTitle"/>
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/mapView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/mapBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
