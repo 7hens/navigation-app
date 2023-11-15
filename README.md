@@ -70,7 +70,6 @@ navigation/
 ```properties
 # local.properties
 GOOGLE_MAPS_API_KEY=xxx
-BAIDU_MAPS_API_KEY=xxx
 ```
 
 针对 BaiduLBS 分支的 local.properties：
