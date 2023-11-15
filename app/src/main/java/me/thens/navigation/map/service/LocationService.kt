@@ -1,4 +1,4 @@
-package me.thens.navigation.map
+package me.thens.navigation.map.service
 
 import android.annotation.SuppressLint
 import android.util.Log

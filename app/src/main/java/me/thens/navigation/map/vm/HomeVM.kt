@@ -1,20 +1,24 @@
-package me.thens.navigation.map
+package me.thens.navigation.map.vm
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
-import androidx.lifecycle.switchMap
-import com.baidu.ar.it
 import com.baidu.mapapi.map.MyLocationData
 import com.baidu.mapapi.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import me.thens.navigation.core.app.BaseViewModel
+import me.thens.navigation.map.service.RouteService
+import me.thens.navigation.map.util.distanceTo
+import me.thens.navigation.map.service.LocationService
+import me.thens.navigation.map.util.toLatLng
+import me.thens.navigation.map.util.toMyLocation
+import me.thens.navigation.map.util.wayPoints
 import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
-class BaiduMapVM @Inject constructor(
+class HomeVM @Inject constructor(
     private val locationService: LocationService,
     private val routeService: RouteService,
 ) : BaseViewModel() {

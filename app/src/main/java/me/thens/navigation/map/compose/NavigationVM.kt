@@ -9,12 +9,12 @@ import com.baidu.mapapi.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import me.thens.navigation.core.app.BaseViewModel
-import me.thens.navigation.map.LocationService
-import me.thens.navigation.map.RouteService
-import me.thens.navigation.map.distanceTo
-import me.thens.navigation.map.toLatLng
-import me.thens.navigation.map.toMyLocation
-import me.thens.navigation.map.wayPoints
+import me.thens.navigation.map.service.LocationService
+import me.thens.navigation.map.service.RouteService
+import me.thens.navigation.map.util.distanceTo
+import me.thens.navigation.map.util.toLatLng
+import me.thens.navigation.map.util.toMyLocation
+import me.thens.navigation.map.util.wayPoints
 import java.util.Date
 import javax.inject.Inject
 

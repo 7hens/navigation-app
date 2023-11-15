@@ -1,4 +1,4 @@
-package me.thens.navigation.map
+package me.thens.navigation.map.activity
 
 import android.graphics.Color
 import android.os.Bundle
@@ -18,12 +18,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import me.thens.navigation.R
 import me.thens.navigation.core.app.Permission
 import me.thens.navigation.databinding.ActivityBaiduMapBinding
+import me.thens.navigation.map.vm.HomeVM
+import me.thens.navigation.map.util.toLatLng
 
 @AndroidEntryPoint
-class BaiduMapActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
     private lateinit var b: ActivityBaiduMapBinding
     private val locationPermission = Permission.LOCATION.register(this)
-    private val baiduMapVM by viewModels<BaiduMapVM>()
+    private val homeVM by viewModels<HomeVM>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,10 +33,10 @@ class BaiduMapActivity : AppCompatActivity() {
         b = ActivityBaiduMapBinding.inflate(layoutInflater)
         setContentView(b.root)
         initBaiduMap(b.mapView)
-        baiduMapVM.destination.observe(this) { updateDestination(it) }
-        baiduMapVM.myLocation.observe(this) { updateMyLocation(it) }
-        baiduMapVM.isNavigatable.observe(this) { updateNavigatable(it) }
-        baiduMapVM.navigationPath.observe(this) { updateNavigationPath(it) }
+        homeVM.destination.observe(this) { updateDestination(it) }
+        homeVM.myLocation.observe(this) { updateMyLocation(it) }
+        homeVM.isNavigatable.observe(this) { updateNavigatable(it) }
+        homeVM.navigationPath.observe(this) { updateNavigationPath(it) }
     }
 
     private var destinationOverlay: Overlay? = null
@@ -64,7 +66,7 @@ class BaiduMapActivity : AppCompatActivity() {
     private fun updateNavigatable(isNavigatable: Boolean) {
         b.actionButton.run {
             isEnabled = isNavigatable
-            text = when (baiduMapVM.destination.value) {
+            text = when (homeVM.destination.value) {
                 null -> "Select Destination"
                 else -> "Start navigation"
             }
@@ -90,17 +92,17 @@ class BaiduMapActivity : AppCompatActivity() {
         map.isMyLocationEnabled = locationPermission.isGranted()
         map.setOnMapClickListener(object : BaiduMap.OnMapClickListener {
             override fun onMapClick(p0: LatLng?) {
-                baiduMapVM.onEvent(BaiduMapVM.Event.UpdateDestination(p0!!))
+                homeVM.onEvent(HomeVM.Event.UpdateDestination(p0!!))
             }
 
             override fun onMapPoiClick(p0: MapPoi?) {
             }
         })
         map.setOnMapLoadedCallback {
-            baiduMapVM.onEvent(BaiduMapVM.Event.OnMapLoaded)
+            homeVM.onEvent(HomeVM.Event.OnMapLoaded)
         }
         b.relocationButton.setOnClickListener {
-            val myLocation = baiduMapVM.myLocation.value ?: return@setOnClickListener
+            val myLocation = homeVM.myLocation.value ?: return@setOnClickListener
             map.animateMapStatus(MapStatusUpdateFactory.newLatLng(myLocation.toLatLng()))
         }
     }

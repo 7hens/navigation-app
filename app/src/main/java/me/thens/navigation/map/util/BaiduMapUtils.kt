@@ -1,4 +1,4 @@
-package me.thens.navigation.map
+package me.thens.navigation.map.util
 
 import android.location.Location
 import com.baidu.location.BDLocation

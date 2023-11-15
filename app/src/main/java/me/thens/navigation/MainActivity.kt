@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
-import me.thens.navigation.map.BaiduMapActivity
+import me.thens.navigation.map.activity.HomeActivity
 import me.thens.navigation.map.compose.NavigationScreen
 import me.thens.navigation.ui.theme.AppTheme
 
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (true) {
-            startActivity(Intent(this, BaiduMapActivity::class.java))
+            startActivity(Intent(this, HomeActivity::class.java))
             return
         }
         setContent {

@@ -8,6 +8,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import me.thens.navigation.map.service.RouteService
+import me.thens.navigation.map.service.LocationService
 import javax.inject.Singleton
 
 @Module

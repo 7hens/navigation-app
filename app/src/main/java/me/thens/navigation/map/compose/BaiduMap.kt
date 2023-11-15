@@ -22,7 +22,7 @@ import com.baidu.mapapi.map.MyLocationData
 import com.baidu.mapapi.map.OverlayOptions
 import com.baidu.mapapi.model.LatLng
 import me.thens.navigation.core.app.LifecycleEffect
-import me.thens.navigation.map.toLatLng
+import me.thens.navigation.map.util.toLatLng
 
 data class BaiduMapState(
     val isMyLocationEnabled: Boolean = false,
