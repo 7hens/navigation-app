@@ -7,6 +7,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.baidu.mapapi.map.BitmapDescriptorFactory
 import com.baidu.mapapi.map.MarkerOptions
+import com.baidu.mapapi.map.OverlayOptions
 import com.baidu.mapapi.map.PolylineOptions
 import com.baidu.mapapi.model.LatLng
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -75,13 +77,9 @@ private fun BaiduNavigation(state: NavigationVM.State, onEvent: (NavigationVM.Ev
     } else {
         var mapState by rememberBaiduMapState()
         val overlays = listOfNotNull(
-            polylineOptions(state.navigationPath, Color.BLUE),
-            polylineOptions(state.traveledPath, Color.GREEN),
-            state.destination?.let {
-                MarkerOptions()
-                    .position(it)
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_end))
-            },
+            rememberPolylineOptions(state.navigationPath, Color.BLUE),
+            rememberPolylineOptions(state.traveledPath, Color.GREEN),
+            rememberMarkerOptions(state.destination, R.drawable.icon_end),
         )
         mapState = mapState.copy(
             isMyLocationEnabled = isPermissionGranted,
@@ -98,11 +96,26 @@ private fun BaiduNavigation(state: NavigationVM.State, onEvent: (NavigationVM.Ev
     }
 }
 
-private fun polylineOptions(points: List<LatLng>, color: Int): PolylineOptions? {
-    if (points.size < 2) {
-        return null
+@Composable
+private fun rememberPolylineOptions(points: List<LatLng>, color: Int): PolylineOptions? {
+    return remember(points, color) {
+        if (points.size < 2) {
+            null
+        } else {
+            PolylineOptions().points(points).color(color)
+        }
     }
-    return PolylineOptions().points(points).color(color)
+}
+
+@Composable
+private fun rememberMarkerOptions(latlng: LatLng?, resId: Int): OverlayOptions? {
+    return remember(latlng, resId) {
+        latlng?.let {
+            MarkerOptions()
+                .position(it)
+                .icon(BitmapDescriptorFactory.fromResource(resId))
+        }
+    }
 }
 
 @Composable

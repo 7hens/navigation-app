@@ -49,7 +49,7 @@ class NavigationVM @Inject constructor(
 
     fun handle(event: Event) {
         when (event) {
-            is Event.UpdateDestination -> state = state.copy(destination = event.value)
+            is Event.UpdateDestination -> updateDestination(event.value)
             is Event.StartNavigation -> startNavigation()
             is Event.StopNavigation -> stopNavigation()
             is Event.OnMapLoaded -> onMapLoaded()
@@ -75,6 +75,25 @@ class NavigationVM @Inject constructor(
                     animatesToMyLocation = state.myLocation == null,
                 )
             }
+        }
+    }
+
+    private var routePlanJob: Job = Job()
+
+    private fun updateDestination(destination: LatLng) {
+        val origin = state.myLocation!!.toLatLng()
+        state = state.copy(
+            destination = destination,
+            origin = origin,
+            navigationPath = emptyList(),
+        )
+        routePlanJob.cancel()
+        routePlanJob = launch {
+            val routes = routeService.walkingRoutes(origin, destination)
+            require(routes.routeLines.isNotEmpty()) { "No available route line!" }
+            val navigationPath = routes.routeLines.first().wayPoints
+            Log.d(TAG, "navigationPath: $navigationPath")
+            state = state.copy(navigationPath = navigationPath)
         }
     }
 
